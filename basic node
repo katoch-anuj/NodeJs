@@ -87,6 +87,43 @@ emitter.on("message",function(arg){
 })
 emitter.emit("message",{})
 
+function inside a class is called method of that class and we dont use keyword function in that case
+
+To raise an event form one file and have listener in another file then we cant use 
+const emitter = new EventEmitter()  as this will create 2 instances of event module so to listen to emit in another file we will make use of a class:
+
+file 1
+const EventEmitter = require ("events")
+
+class EventLog extends EventEmitter{
+	log(){
+		//Raise an event
+		this.emit('message',{})
+	}
+}
+module.exports = eventLog
+
+
+file 2
+const EventEmitter = require ("events")
+const EventLog=require("/eventLog")
+
+const logger= new EventLogger() // instance of class
+
+logger.on("message",function(data){
+	
+})
+logger.log()
+
+ Http (inherits from net.Server which is event Emitter)
+ const http = require("http")
+ const server =  http.createServer();  // here server is an event emitter
+
+ server.on("connection",(socket)=>{
+
+ })
+ server.listen(3000)
+
 
 
 
