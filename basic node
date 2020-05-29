@@ -1,0 +1,96 @@
+NOde : executing js at runtime(js engine)
+chrome: v8
+firefox: spider monkey
+Ie : chakra
+
+Ryan Dahl
+v8 inside c++ program ->node.exe
+
+Node is not a prgramming languagge(c#)
+Node is not a framework(asp.net multithreaded and is sync by defualt but can be made async)
+
+runtime env for executing js
+
+Node is ideal for I/O intensive apps
+Not used for CPU intensive apps(image manipulation service) cz of heavy calculation at cpu and few touch to file system or network so another request will have to sit and wait
+
+Node doesn't have window or document object
+
+
+Node Module:
+of
+fs
+events
+http
+
+in node we have global keyword and not window
+eg: global.console.log()
+
+var msg="";
+variables as above are not added to global object -> global.msg : prints undefined i.e their scope is within that file(module)
+
+
+so every node app has atleast one module i.e main module
+
+console.log(module) returns an object which has: id,exports,parent,filename,loaded,children,path
+console.log(global.module) (doesnt work cz it appears to be global but its not global)
+
+to make something accessible from other module use:
+function log(){}
+module.exports.log=log (we are exporting an object)
+ to use this function:
+require('./path')  (relative path)
+var logger= require('./path')
+logger.log()
+best practise: const logger = require("./")
+
+ to simply export (a fuction)
+ module.exports = log;
+ to use
+ const logger = require("./")
+ logger()
+
+
+NOTE: 
+var x=; (will give error only if it's on the very first line)
+(function(exports,require,module,__filename,__dirname){})  (Module wrapper function)
+
+module.exports.log =log
+exports.log = log
+above can be done because exports = module.exports 
+
+module.exports = log cant be written as exports=log (cant change the reference)
+
+
+Node build in modules
+require("path") no . or slash which means built in module
+path : path.parse(__filename) returns an object
+os
+fs: fs.readdir('',function(err,files)) array of files
+
+
+Event
+const EventEmitter = require("events").  convention E is caps to denote it is a class
+const emitter = new EventEmitter();
+
+//emitter.addListener = emitter.on
+
+emitter.on("message",function(){
+	 //listener should be registered before emit
+})
+
+emitter.emit("message")
+
+Passinng values (event argument)
+emitter.on("message",function(arg){
+	
+})
+emitter.emit("message",{})
+
+
+
+
+
+
+
+

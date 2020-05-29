@@ -1,0 +1,524 @@
+target="blank" open same window if we click on link again
+target="_blank" opens new window every time
+ div + p (all p placed immediately after <div> )
+ div ~ p (all p element that are preceded by a <div> element)
+ div > p (parent is div(or direct child) )
+Compose is used when you want to pass multiple store enhancers to the store.
+
+
+
+
+
+
+
+js is exeucted at backend by VM(virtual machine like V8/chakra) and nodejs is like a wrapper around VM
+
+Node -> V8(single threaded that why its async)
+
+Node :
+Build in modules
+Async API and  not threads
+Can make C++ addons
+NPM 
+Module Dependency Manager
+
+ Node is
+Platform for tools in React
+It has Module Dependency Manager(CommonJs= require fucntion in node + module object)
+
+REPL : read Eval Print Loop (undefined for statement)
+
+... 3 dots can be used for multiline entering
+.editor for multipe function
+.save filename
+more filename
+.load filename
+_ to store value
+
+setTimeout(cb, delay,params)
+setImmediate can be used when interval is 0
+clearTimeout
+clearInterval
+clearImmediate
+
+NODE_DEBUG
+node -h | less
+
+VAL1=20 node filename
+we can use value VAL1  using "process.env"
+or we can use export VAL1=100
+process.argv gets us an array
+node file.js 5 hi
+print(process.argv[2],process.argv[3]) // print(5,hi)
+
+streams
+process.stdout :  process.stdout.write 
+process.stdin : process.stdin.read()
+process.stdin.pipe(process.stdout)
+
+To exit node automatically
+process.exit()
+process.on('exit',cb) 	
+
+Object literals
+const mystery="hello"
+connst Obj={
+[mystery]:"bye",
+mystery,   // evaluates to mystery:mystery	
+}
+
+const circle({radius},{val=2}={}){
+	/* here the last empty object makes the second param optional and its default value as 2
+}
+
+circle({radius:6})
+
+NPM :
+code sharing
+composability
+versioning
+
+package-lock.json
+contains info about the dependencies mentioned in package.json and the module required for those dependencies(not just direct dependencies)
+to allow same version use even if the version is increased
+
+npm i -D
+nodemon to restart node when changes are done
+npm init --yes  (use default config for package)
+
+Semantic version 
+4.2.0
+4 : Major breaking changes(may require code changes)
+2 : Minor backward compatible
+0: Bug fixes(security and no new feature)
+
+~1.2.3 can intall any version of series 1.2.x
+^1.2.3 update to minor changes 1.x.y
+
+Creating and publishing npm
+const print=require("hello") // here hello should be present inside node_modules
+inside hello directory make index.js
+in index.js
+
+module.exports=function print(){}
+NOTE:
+export is a variable.
+export.a can be done and then we can have module.export.a
+however if we do export=a then it will overwrite
+
+var module = { exports: {} };
+var exports = module.exports;
+return module.exports; /default/
+
+
+Account on npmjs
+npm login
+create a package file inside hello
+npm publish
+
+npx
+we use npx to access local eslint 
+npm eslint --init to create config for eslint
+
+npm uninstall dep
+npm update
+npm show lodash versions
+npm outdated
+npm intstall lodash@4
+npm intstall lodash@latest
+
+NOTE:
+console.log(arguments) 
+In browser if its outside function then its undefined,However in node js it returns 5 arguments,
+so console.log(arguments)  in node js becomes something like
+function (exports,module,require,__filename, __dirname){ //hidden wrapping function which is not present in browser
+let g=1 (global in browser but not in node)
+	console.log(arguments) 	
+}
+__filename : path of the file
+__dirname : path of directory
+
+
+global Object
+gloabl is equivalent to window
+
+PM2 for node cluster
+
+errorfirstCallback pattern : in cb the first param is error
+Primitive doon : cb inside cb
+
+Event Emitter 
+const eventEmitter = require("events");
+const myEmit =  new eventEmitter();
+myEmit.emit("HELLO");
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+
+
+NOTE: ABove no output as we subscribed after they are emitted.
+
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+myEmit.emit("HELLO");
+
+setImmediate(()=>{
+	myEmit.emit("HELLO");	
+})
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+myEmit.on("HELLO",cb)
+
+now above 2  will work
+
+
+Web Servers
+const http = require("http")
+
+const handler=(req,res)=>{  //request event is called everytime request event is emitted
+	res.write("hello"); // we can use directly res.end("hello")
+	res.end(); // this is required without .end it wont work
+}
+
+const server = http.createServer(handler) // server is event emitter which emits  request event
+// or we can use since server is an emiiter
+const server = http.createServer();
+server.on("request",handler);
+
+server.listen(portnumber,cb);
+
+For file changes use nodemon
+nodemon filename
+
+console.dir(req, {depth:0})  req belongs to  class IncomingMessage(read stream)
+
+above line will be executed twice which means there 2 requests
+extra req is for favicon.ico
+
+res belongs to ServerResponse class (writable stream)
+
+EXPRESS.js or(koajs,sailsjs,meteor) 
+const express = require ("express");
+
+const server = express();
+
+server.get("/",(req,res)=>{
+	res.send("hello") // automatically calls .end
+})
+server.get("/about",(req,res)=>{
+	
+})
+server.listen(portnumber,cb)
+ NOTE: Http,HTTP/2,HTTPS : no api to read body param from get request
+
+TEMPLATE Language
+EJS embedded js langugae
+server.set('view engine','ejs');
+
+res.render("index") // in place res.send() index inside views folder
+
+to use js
+<%- -%>
+
+working with OS
+os,fs,child_process
+
+readFile and writeFile use buffer which can use lot of memory
+createReadStream
+createWriteStream
+
+DEBUGGER
+node --inspect-brk filename
+chrome://inspect
+
+
+
+
+
+ADVANCED
+v8 features
+shipping staged In Progress
+to enable
+shipping :  -p
+stagged : --harmony
+
+ require("something")
+ steps:
+ Resolving,loading,wrapping,evalutaing,caching
+ require.resolve("filename") : only resolve and not execute it(does not load the file)
+
+ It resolves path in step wise process and returns the value from first match
+
+The filename need not to be a js file it can be directory with index.js(default name)
+If we want to use some other js file then in package.json
+{
+	name:"dirname",
+	main:"x.js"
+}
+when we do console.log(module ) in parent and child too
+children:[[circular]]
+
+Circular Module Dependency(allowed in node)
+Parent requires child module and child requires parent module
+
+Loaded attribute
+Its value is false as long as the module is not loaded.
+
+eg:
+Parent
+console.log(module);			(Case 1: loaded false)  Case2: true
+const field = require("./path")  // case 1: get value of id. case2 : no value so cant use exports inside timeout
+
+Child
+console.log(module); 		(loaded false)
+exports.id="hello"
+
+ child
+ setImmediate(()=>{
+	 console.log(module); 		(loaded true)
+	exports.id="hello"
+ })
+
+index.js
+const m1 = require("/m1")
+console.log(m1).           (loaded true)
+
+m1:
+exports.constant=[1];
+const m2 = require("/m2")
+console.log(m2)
+exports.constant.push(11);
+
+m2:
+exports.constant=[2];
+exports.constant.push(22);
+const m1 = require("/m1")  (partial exported)
+console.log("hello",m1)     loaded(false)
+
+Output:
+hello constant:[1];
+constant: [2,22];
+constant:[1,11];
+
+JSON and c++addons
+
+sequence in which require works
+require("something");
+ It will check for following:
+ try something.js
+ try something.json
+ try something.node : binding.gyp(file)->install node-gyp -> node-gyp configure -> create Makefile inside build ->node-gyp build -> binary file inside release(.node extension)
+
+ require.extension gives above 3
+
+ if(require.main == module){
+ 	Runnig as script
+ }else{
+ 	being reqired
+ }
+
+CACHING MODULE
+require("file")
+require("file") //this wont work as it is cached to make it work we cna delete
+delete require.cache( full file path)
+console.log(require.cache)
+
+
+better way is
+test.js:
+module.exports = ()=>{
+	console.log("hello")
+}
+
+and in main file use
+require("test.js")()
+require("test.js")()
+
+
+About npm:
+npm ls -g --depth=0 // all global pkg
+
+npm i -D //dev-dependency
+npm i -O //optional
+
+apache is multi-threaded
+ngnx single threaded
+
+EVENT LOOP
+V8 : Heap and stack
+Node provides api(setTimeout) , event loop and queue using libuv
+
+The cb of setTimeout is pushed into the queue
+SetImmediate takes precedence over setTimeout of 0 delay
+process.nextTick : not a part of event loop and does not care about phases of event loop. Executed after the current operation completes and before event loop continues.
+
+A function should be either sync or async and not both.
+
+
+
+EVENT EMITTER
+
+we can avoid crashing of node server if some error occurs by using event listener.
+
+if(err){
+	return this.emit('error',error)
+}
+
+const newtime = new NewTime();
+newtime.on("error",cb)
+
+OR
+
+process.on('uncaughtException',(err)=>{
+	//some cleanup
+	process.exit(1) //exit anyway
+}) 
+
+Code might have multiple errors in that case above will execute multiple times so can affect cleanup process
+so use
+
+process.once('uncaughtException',(err)=>{
+	
+})
+since event listener are executed in sequence so if we want any listener to be executed first then:
+ newtime.prependListener();
+ newTime.removeListener()
+
+
+NODE FOR NETWORKING
+nc localhost portnumber
+.net
+require("net")
+1> createServer() : it emits events like: connection(which provides socket in cb)
+socket is duplex it can listen and emit.
+socket events : data,end
+socket.setEncoding("utf8") // convert buffer to string on server
+
+
+DNS
+
+dns.lookup("google.com",(err,address)=>{}) // return ip (not performs any network communication but uses OS facilites to perform resulution i.e libuv)
+rest use network and not libuv
+
+dns.resolve4("site",(err,address)=>{})
+dns.revers("ip",(err,hostname)=>{})
+
+
+HTTP Streaming
+to inspect header
+curl -i localhost:1111
+
+curl localhost:1111. || will print on console the res.end("")
+
+connection:keep alive || the server will not kill the connection 
+transfer-Encoding: chunk // Response is being streamsed(streams part of response that are ready	)
+
+if we dont do "res.end" then the request will timeout after default time period which is 2 min.
+To increase the timeout time use:
+server.timeout=10000 (10 sec)
+
+working with https
+man openssl
+to get key and certificate use:
+openssl req -nodes -new -x509 -keyout server.key -out server.cert
+will generate key and cert
+
+To run :
+sudo node https.js
+
+
+
+Requesting http and https data 
+Node can be used as client to request http and https data
+ there are 5 main modules in http/https:
+ http.IncomingMessage: readable stream || EE
+ http.server : to create server || iherits from net.server and is an event emitter
+ http.ServerResponse : created internally by http server || writable stream EE
+ http.Agent :  used to manage pooling socket using http.clientrequest. Node uses gloablAgent by default but we can create new agent by using new Agent
+ http.clientRequest : different from server request || writable stream EE
+
+
+http.get() is done using http.globalAgent
+
+
+ROUTES:
+
+http.STATUS_CODES
+
+QUERY PARAM
+url.html
+
+url.parse("") -? return object
+url.parse("",true) : it parses query also(i.e coverts query into an object)
+ url.format({}) -> return the url formed from object (does not escape special char)
+ querystring.stringify({}) -> escapes special characters(@,?)
+ querystring.parse("url")
+
+WORKING WITH OS
+require("os")
+
+FILE SYSTEM
+require ("fs")
+fs.readFile(__fileName,function(err,data){
+		
+})  -> eg: reading file during server iitialization.  error as first argument
+const data = fs.readFileSync(filename) -> eg: each time a user requests a file from server.  use try catch to avoid bubbling up of error
+
+both return buffer unless we specify charencoding
+
+cost files = fs.readdirSync(dirname) 
+here files will hav only the name of files and not the path
+fs.stat() -> gives the meta info of file
+
+NOTE: more filename => returns the file  code
+
+
+ls -l directory name to get all files along with dates
+
+
+CONSOLE AND UTILITIES
+
+console.Console :-> Console class to write to any node stream(socket or file)
+
+console -> writes to stdout and stderror
+
+utility 
+%n
+%s
+%j
+
+Working with streams 
+working on big data
+
+to write a stream
+const file = fs.createWriteStream(filepath)
+file.write("content")
+
+file.end()
+
+fs.readFile() -> reads complete file before wrtiting
+
+const file=fs.createReadStream(path)
+file.pipe(res )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
